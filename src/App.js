@@ -19,36 +19,37 @@ function App() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState('');
+  // const [isAdded, setIsAdded] = useState(false);
 
 
 
 
   useEffect(()=>{
-    const data =[
-      {
-        id : 1,
-        title: 'First title',
-        description: 'Test Description',
-        priority: 'High'
+    // const data =[
+    //   {
+    //     id : 1,
+    //     title: 'First title',
+    //     description: 'Test Description',
+    //     priority: 'High'
         
-      },
-      {
-        id : 2,
-        title: 'Second title',
-        description: 'Test Description',
-        priority: 'Medium'
+    //   },
+    //   {
+    //     id : 2,
+    //     title: 'Second title',
+    //     description: 'Test Description',
+    //     priority: 'Medium'
         
-      },
-      {
-        id : 3,
-        title: 'Third title',
-        description: 'Test Description',
-        priority: 'Low'
+    //   },
+    //   {
+    //     id : 3,
+    //     title: 'Third title',
+    //     description: 'Test Description',
+    //     priority: 'Low'
         
-      }
-    ];
+    //   }
+    // ];
 
-    setTasks(data);
+    // setTasks(data);
    
   }, [])
 
@@ -56,12 +57,35 @@ function App() {
 
   const createTask = (e) => {
    e.preventDefault();
+
+  //  data validation 
+  if(title.length  === 0){
+    alert('Please write a title');
+    return false;
+  }
+  if(description.length  === 0){
+    alert('Please write a description');
+    return false;
+  }
+  if(priority.length  === 0){
+    alert('Please select a priority');
+    return false;
+  }
    const taskItem ={
     id: 100,
     title,
     description,
     priority
    }
+
+   const taskData = tasks;
+   taskData.push(taskItem);
+   setTasks(taskData);
+
+   setTitle('');
+   setDescription('');
+   setPriority('');
+
    console.log('tasks :', taskItem );
   } 
 
