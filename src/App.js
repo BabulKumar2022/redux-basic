@@ -5,6 +5,7 @@ import {
   Form,
   FormControl,
   Button,
+
 } from "react-bootstrap";
 import "./App.css";
 import Table from "react-bootstrap/Table";
@@ -12,16 +13,57 @@ import { useEffect, useState } from "react";
 
 function App() {
 
-  const [isCreateMode, setIsCreateMode] = useState(false)
-  const [task, etTask] = useState([]);
+  const [isCreateMode, setIsCreateMode] = useState()
+  const [tasks, setTasks] = useState([]);
+
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState('');
+
+
+
 
   useEffect(()=>{
     const data =[
       {
+        id : 1,
+        title: 'First title',
+        description: 'Test Description',
+        priority: 'High'
+        
+      },
+      {
+        id : 2,
+        title: 'Second title',
+        description: 'Test Description',
+        priority: 'Medium'
+        
+      },
+      {
+        id : 3,
+        title: 'Third title',
+        description: 'Test Description',
+        priority: 'Low'
         
       }
-    ]
+    ];
+
+    setTasks(data);
+   
   }, [])
+
+  
+
+  const createTask = (e) => {
+   e.preventDefault();
+   const taskItem ={
+    id: 100,
+    title,
+    description,
+    priority
+   }
+   console.log('tasks :', taskItem );
+  } 
 
   return (
     <div className="App">
@@ -51,27 +93,25 @@ function App() {
 
         {
           isCreateMode  && (
-            <Form>
-            <Form.Group className="mb-3" controlId="title">
-            
-              <Form.Control type="text" id='title' placeholder="Enter Title" />
-            </Form.Group>
-  
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Control type="text" as='textarea' placeholder="Description" />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Control as="Select" >
-                <option value={''}>Select task priority</option>
-                <option value={'Low'}>Low</option>
-                <option value={'Medium'}>Medium</option>
-                <option value={'High'}>High</option> 
-              </Form.Control  >
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
+            <Form onSubmit={(e) => createTask(e)}>
+                <Form.Group className="mb-3" controlId="title">
+                  <Form.Control type="text"  placeholder="Enter Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Control type="text" as='textarea' placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <select className={'form-control'}  value={priority} onChange={(e) => setPriority(e.target.value)}>
+                      <option value={''}>Select task priority</option>
+                      <option value={'Low'}>Low</option>
+                      <option value={'Medium'}>Medium</option>
+                      <option value={'High'}>High</option> 
+                  </select>
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+              </Form>
           )
         }
 
@@ -98,22 +138,26 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Test</td>
-              <td>Test Description</td>
-              <td>High</td>
-              <td>
-                <i
-                  className="fa fa-pencil text-success pointer"
-                  title="Edit Task"
-                ></i>
-                <i
-                  className="fa fa-trash text-danger ml-2 pointer"
-                  title="Delete Task"
-                ></i>
-              </td>
-            </tr>
+            {
+              tasks.map((item, index) =>(
+                <tr key={index}>
+                <td>{index+1}</td>
+                <td>{item.title}</td>
+                <td>{item.description}</td>
+                <td>{item.priority}</td>
+                <td>
+                  <i
+                    className="fa fa-pencil text-success pointer"
+                    title="Edit Task"
+                  ></i>
+                  <i
+                    className="fa fa-trash text-danger ml-2 pointer"
+                    title="Delete Task"
+                  ></i>
+                </td>
+              </tr>
+              ))
+            }
           </tbody>
         </Table>
       </Container>
